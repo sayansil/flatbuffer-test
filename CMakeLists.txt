@@ -23,15 +23,28 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(flatbuffer)
 
+FetchContent_Declare(
+    fmtlib
+    GIT_REPOSITORY "https://github.com/fmtlib/fmt"
+    GIT_TAG 1557ab764422d5087619fea3994012066644a11e
+    GIT_PROGRESS TRUE
+)
+FetchContent_MakeAvailable(fmtlib)
+
 set(FLATC ${FlatBuffers_BINARY_DIR}/flatc)
 message("flatc compiler at: ${FLATC}")
 
 add_subdirectory(schemas)
 include_directories(schemas)
 
+find_package(fmt REQUIRED)
+
 function(add_code name)
     add_executable(${name} ${name}.cpp)
-    target_link_libraries(${name} PRIVATE flatbuffers)
+    target_link_libraries(${name} PRIVATE flatbuffers fmt::fmt)
 endfunction()
 
-add_code(main)
+add_code(animal_test)
+add_code(animal_test_obj)
+add_code(world_test)
+add_code(world_test_obj)

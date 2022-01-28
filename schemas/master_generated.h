@@ -10,6 +10,7 @@ namespace Ecosystem {
 
 struct Master;
 struct MasterBuilder;
+struct MasterT;
 
 enum class Gender : int8_t {
   Female = 0,
@@ -41,7 +42,22 @@ inline const char *EnumNameGender(Gender e) {
   return EnumNamesGender()[index];
 }
 
+struct MasterT : public flatbuffers::NativeTable {
+  typedef Master TableType;
+  std::string name{};
+  std::string kind{};
+  std::string chromosome{};
+  uint64_t generation = 1ULL;
+  double immunity = 0.0;
+  Ecosystem::Gender gender = Ecosystem::Gender::Male;
+  uint32_t age = 0;
+  double height = 0.0;
+  double weight = 0.0;
+  double static_fitness = 0.0;
+};
+
 struct Master FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef MasterT NativeTableType;
   typedef MasterBuilder Builder;
   struct Traits;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -59,6 +75,9 @@ struct Master FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *name() const {
     return GetPointer<const flatbuffers::String *>(VT_NAME);
   }
+  flatbuffers::String *mutable_name() {
+    return GetPointer<flatbuffers::String *>(VT_NAME);
+  }
   bool KeyCompareLessThan(const Master *o) const {
     return *name() < *o->name();
   }
@@ -68,29 +87,56 @@ struct Master FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::String *kind() const {
     return GetPointer<const flatbuffers::String *>(VT_KIND);
   }
+  flatbuffers::String *mutable_kind() {
+    return GetPointer<flatbuffers::String *>(VT_KIND);
+  }
   const flatbuffers::String *chromosome() const {
     return GetPointer<const flatbuffers::String *>(VT_CHROMOSOME);
+  }
+  flatbuffers::String *mutable_chromosome() {
+    return GetPointer<flatbuffers::String *>(VT_CHROMOSOME);
   }
   uint64_t generation() const {
     return GetField<uint64_t>(VT_GENERATION, 1ULL);
   }
+  bool mutate_generation(uint64_t _generation = 1ULL) {
+    return SetField<uint64_t>(VT_GENERATION, _generation, 1ULL);
+  }
   double immunity() const {
     return GetField<double>(VT_IMMUNITY, 0.0);
+  }
+  bool mutate_immunity(double _immunity = 0.0) {
+    return SetField<double>(VT_IMMUNITY, _immunity, 0.0);
   }
   Ecosystem::Gender gender() const {
     return static_cast<Ecosystem::Gender>(GetField<int8_t>(VT_GENDER, 1));
   }
+  bool mutate_gender(Ecosystem::Gender _gender = static_cast<Ecosystem::Gender>(1)) {
+    return SetField<int8_t>(VT_GENDER, static_cast<int8_t>(_gender), 1);
+  }
   uint32_t age() const {
     return GetField<uint32_t>(VT_AGE, 0);
+  }
+  bool mutate_age(uint32_t _age = 0) {
+    return SetField<uint32_t>(VT_AGE, _age, 0);
   }
   double height() const {
     return GetField<double>(VT_HEIGHT, 0.0);
   }
+  bool mutate_height(double _height = 0.0) {
+    return SetField<double>(VT_HEIGHT, _height, 0.0);
+  }
   double weight() const {
     return GetField<double>(VT_WEIGHT, 0.0);
   }
+  bool mutate_weight(double _weight = 0.0) {
+    return SetField<double>(VT_WEIGHT, _weight, 0.0);
+  }
   double static_fitness() const {
     return GetField<double>(VT_STATIC_FITNESS, 0.0);
+  }
+  bool mutate_static_fitness(double _static_fitness = 0.0) {
+    return SetField<double>(VT_STATIC_FITNESS, _static_fitness, 0.0);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -109,6 +155,9 @@ struct Master FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<double>(verifier, VT_STATIC_FITNESS) &&
            verifier.EndTable();
   }
+  MasterT *UnPack(const flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(MasterT *_o, const flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static flatbuffers::Offset<Master> Pack(flatbuffers::FlatBufferBuilder &_fbb, const MasterT* _o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
 };
 
 struct MasterBuilder {
@@ -219,12 +268,75 @@ inline flatbuffers::Offset<Master> CreateMasterDirect(
       static_fitness);
 }
 
+flatbuffers::Offset<Master> CreateMaster(flatbuffers::FlatBufferBuilder &_fbb, const MasterT *_o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+
+inline MasterT *Master::UnPack(const flatbuffers::resolver_function_t *_resolver) const {
+  auto _o = std::make_unique<MasterT>();
+  UnPackTo(_o.get(), _resolver);
+  return _o.release();
+}
+
+inline void Master::UnPackTo(MasterT *_o, const flatbuffers::resolver_function_t *_resolver) const {
+  (void)_o;
+  (void)_resolver;
+  { auto _e = name(); if (_e) _o->name = _e->str(); }
+  { auto _e = kind(); if (_e) _o->kind = _e->str(); }
+  { auto _e = chromosome(); if (_e) _o->chromosome = _e->str(); }
+  { auto _e = generation(); _o->generation = _e; }
+  { auto _e = immunity(); _o->immunity = _e; }
+  { auto _e = gender(); _o->gender = _e; }
+  { auto _e = age(); _o->age = _e; }
+  { auto _e = height(); _o->height = _e; }
+  { auto _e = weight(); _o->weight = _e; }
+  { auto _e = static_fitness(); _o->static_fitness = _e; }
+}
+
+inline flatbuffers::Offset<Master> Master::Pack(flatbuffers::FlatBufferBuilder &_fbb, const MasterT* _o, const flatbuffers::rehasher_function_t *_rehasher) {
+  return CreateMaster(_fbb, _o, _rehasher);
+}
+
+inline flatbuffers::Offset<Master> CreateMaster(flatbuffers::FlatBufferBuilder &_fbb, const MasterT *_o, const flatbuffers::rehasher_function_t *_rehasher) {
+  (void)_rehasher;
+  (void)_o;
+  struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const MasterT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
+  auto _name = _fbb.CreateString(_o->name);
+  auto _kind = _fbb.CreateString(_o->kind);
+  auto _chromosome = _fbb.CreateString(_o->chromosome);
+  auto _generation = _o->generation;
+  auto _immunity = _o->immunity;
+  auto _gender = _o->gender;
+  auto _age = _o->age;
+  auto _height = _o->height;
+  auto _weight = _o->weight;
+  auto _static_fitness = _o->static_fitness;
+  return Ecosystem::CreateMaster(
+      _fbb,
+      _name,
+      _kind,
+      _chromosome,
+      _generation,
+      _immunity,
+      _gender,
+      _age,
+      _height,
+      _weight,
+      _static_fitness);
+}
+
 inline const Ecosystem::Master *GetMaster(const void *buf) {
   return flatbuffers::GetRoot<Ecosystem::Master>(buf);
 }
 
 inline const Ecosystem::Master *GetSizePrefixedMaster(const void *buf) {
   return flatbuffers::GetSizePrefixedRoot<Ecosystem::Master>(buf);
+}
+
+inline Master *GetMutableMaster(void *buf) {
+  return flatbuffers::GetMutableRoot<Master>(buf);
+}
+
+inline Ecosystem::Master *GetMutableSizePrefixedMaster(void *buf) {
+  return flatbuffers::GetMutableSizePrefixedRoot<Ecosystem::Master>(buf);
 }
 
 inline bool VerifyMasterBuffer(
@@ -247,6 +359,18 @@ inline void FinishSizePrefixedMasterBuffer(
     flatbuffers::FlatBufferBuilder &fbb,
     flatbuffers::Offset<Ecosystem::Master> root) {
   fbb.FinishSizePrefixed(root);
+}
+
+inline std::unique_ptr<Ecosystem::MasterT> UnPackMaster(
+    const void *buf,
+    const flatbuffers::resolver_function_t *res = nullptr) {
+  return std::unique_ptr<Ecosystem::MasterT>(GetMaster(buf)->UnPack(res));
+}
+
+inline std::unique_ptr<Ecosystem::MasterT> UnPackSizePrefixedMaster(
+    const void *buf,
+    const flatbuffers::resolver_function_t *res = nullptr) {
+  return std::unique_ptr<Ecosystem::MasterT>(GetSizePrefixedMaster(buf)->UnPack(res));
 }
 
 }  // namespace Ecosystem

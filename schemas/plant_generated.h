@@ -10,8 +10,45 @@ namespace Ecosystem {
 
 struct Plant;
 struct PlantBuilder;
+struct PlantT;
+
+struct PlantT : public flatbuffers::NativeTable {
+  typedef Plant TableType;
+  uint64_t year = 0;
+  uint64_t population = 0;
+  uint64_t matable_population = 0;
+  double conceiving_probability = 0.0;
+  double mating_probability = 0.0;
+  uint32_t mating_age_start = 0;
+  uint32_t mating_age_end = 0;
+  uint32_t max_age = 0;
+  double mutation_probability = 0.0;
+  double offsprings_factor = 0.0;
+  double age_fitness_on_death_ratio = 0.0;
+  double height_on_vitality = 0.0;
+  double weight_on_vitality = 0.0;
+  double theoretical_maximum_base_height = 0.0;
+  double theoretical_maximum_base_vitality = 0.0;
+  double theoretical_maximum_base_weight = 0.0;
+  double theoretical_maximum_height = 0.0;
+  double theoretical_maximum_weight = 0.0;
+  double theoretical_maximum_height_multiplier = 0.0;
+  double theoretical_maximum_vitality_multiplier = 0.0;
+  double theoretical_maximum_weight_multiplier = 0.0;
+  uint64_t average_generation = 0;
+  double average_immunity = 0.0;
+  uint32_t average_age = 0;
+  double average_height = 0.0;
+  double average_weight = 0.0;
+  double average_max_vitality_at_age = 0.0;
+  double average_static_fitness = 0.0;
+  double average_age_death_factor = 0.0;
+  double average_fitness_death_factor = 0.0;
+  double average_death_factor = 0.0;
+};
 
 struct Plant FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef PlantT NativeTableType;
   typedef PlantBuilder Builder;
   struct Traits;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -50,6 +87,9 @@ struct Plant FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint64_t year() const {
     return GetField<uint64_t>(VT_YEAR, 0);
   }
+  bool mutate_year(uint64_t _year = 0) {
+    return SetField<uint64_t>(VT_YEAR, _year, 0);
+  }
   bool KeyCompareLessThan(const Plant *o) const {
     return year() < o->year();
   }
@@ -59,92 +99,182 @@ struct Plant FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint64_t population() const {
     return GetField<uint64_t>(VT_POPULATION, 0);
   }
+  bool mutate_population(uint64_t _population = 0) {
+    return SetField<uint64_t>(VT_POPULATION, _population, 0);
+  }
   uint64_t matable_population() const {
     return GetField<uint64_t>(VT_MATABLE_POPULATION, 0);
+  }
+  bool mutate_matable_population(uint64_t _matable_population = 0) {
+    return SetField<uint64_t>(VT_MATABLE_POPULATION, _matable_population, 0);
   }
   double conceiving_probability() const {
     return GetField<double>(VT_CONCEIVING_PROBABILITY, 0.0);
   }
+  bool mutate_conceiving_probability(double _conceiving_probability = 0.0) {
+    return SetField<double>(VT_CONCEIVING_PROBABILITY, _conceiving_probability, 0.0);
+  }
   double mating_probability() const {
     return GetField<double>(VT_MATING_PROBABILITY, 0.0);
+  }
+  bool mutate_mating_probability(double _mating_probability = 0.0) {
+    return SetField<double>(VT_MATING_PROBABILITY, _mating_probability, 0.0);
   }
   uint32_t mating_age_start() const {
     return GetField<uint32_t>(VT_MATING_AGE_START, 0);
   }
+  bool mutate_mating_age_start(uint32_t _mating_age_start = 0) {
+    return SetField<uint32_t>(VT_MATING_AGE_START, _mating_age_start, 0);
+  }
   uint32_t mating_age_end() const {
     return GetField<uint32_t>(VT_MATING_AGE_END, 0);
+  }
+  bool mutate_mating_age_end(uint32_t _mating_age_end = 0) {
+    return SetField<uint32_t>(VT_MATING_AGE_END, _mating_age_end, 0);
   }
   uint32_t max_age() const {
     return GetField<uint32_t>(VT_MAX_AGE, 0);
   }
+  bool mutate_max_age(uint32_t _max_age = 0) {
+    return SetField<uint32_t>(VT_MAX_AGE, _max_age, 0);
+  }
   double mutation_probability() const {
     return GetField<double>(VT_MUTATION_PROBABILITY, 0.0);
+  }
+  bool mutate_mutation_probability(double _mutation_probability = 0.0) {
+    return SetField<double>(VT_MUTATION_PROBABILITY, _mutation_probability, 0.0);
   }
   double offsprings_factor() const {
     return GetField<double>(VT_OFFSPRINGS_FACTOR, 0.0);
   }
+  bool mutate_offsprings_factor(double _offsprings_factor = 0.0) {
+    return SetField<double>(VT_OFFSPRINGS_FACTOR, _offsprings_factor, 0.0);
+  }
   double age_fitness_on_death_ratio() const {
     return GetField<double>(VT_AGE_FITNESS_ON_DEATH_RATIO, 0.0);
+  }
+  bool mutate_age_fitness_on_death_ratio(double _age_fitness_on_death_ratio = 0.0) {
+    return SetField<double>(VT_AGE_FITNESS_ON_DEATH_RATIO, _age_fitness_on_death_ratio, 0.0);
   }
   double height_on_vitality() const {
     return GetField<double>(VT_HEIGHT_ON_VITALITY, 0.0);
   }
+  bool mutate_height_on_vitality(double _height_on_vitality = 0.0) {
+    return SetField<double>(VT_HEIGHT_ON_VITALITY, _height_on_vitality, 0.0);
+  }
   double weight_on_vitality() const {
     return GetField<double>(VT_WEIGHT_ON_VITALITY, 0.0);
+  }
+  bool mutate_weight_on_vitality(double _weight_on_vitality = 0.0) {
+    return SetField<double>(VT_WEIGHT_ON_VITALITY, _weight_on_vitality, 0.0);
   }
   double theoretical_maximum_base_height() const {
     return GetField<double>(VT_THEORETICAL_MAXIMUM_BASE_HEIGHT, 0.0);
   }
+  bool mutate_theoretical_maximum_base_height(double _theoretical_maximum_base_height = 0.0) {
+    return SetField<double>(VT_THEORETICAL_MAXIMUM_BASE_HEIGHT, _theoretical_maximum_base_height, 0.0);
+  }
   double theoretical_maximum_base_vitality() const {
     return GetField<double>(VT_THEORETICAL_MAXIMUM_BASE_VITALITY, 0.0);
+  }
+  bool mutate_theoretical_maximum_base_vitality(double _theoretical_maximum_base_vitality = 0.0) {
+    return SetField<double>(VT_THEORETICAL_MAXIMUM_BASE_VITALITY, _theoretical_maximum_base_vitality, 0.0);
   }
   double theoretical_maximum_base_weight() const {
     return GetField<double>(VT_THEORETICAL_MAXIMUM_BASE_WEIGHT, 0.0);
   }
+  bool mutate_theoretical_maximum_base_weight(double _theoretical_maximum_base_weight = 0.0) {
+    return SetField<double>(VT_THEORETICAL_MAXIMUM_BASE_WEIGHT, _theoretical_maximum_base_weight, 0.0);
+  }
   double theoretical_maximum_height() const {
     return GetField<double>(VT_THEORETICAL_MAXIMUM_HEIGHT, 0.0);
+  }
+  bool mutate_theoretical_maximum_height(double _theoretical_maximum_height = 0.0) {
+    return SetField<double>(VT_THEORETICAL_MAXIMUM_HEIGHT, _theoretical_maximum_height, 0.0);
   }
   double theoretical_maximum_weight() const {
     return GetField<double>(VT_THEORETICAL_MAXIMUM_WEIGHT, 0.0);
   }
+  bool mutate_theoretical_maximum_weight(double _theoretical_maximum_weight = 0.0) {
+    return SetField<double>(VT_THEORETICAL_MAXIMUM_WEIGHT, _theoretical_maximum_weight, 0.0);
+  }
   double theoretical_maximum_height_multiplier() const {
     return GetField<double>(VT_THEORETICAL_MAXIMUM_HEIGHT_MULTIPLIER, 0.0);
+  }
+  bool mutate_theoretical_maximum_height_multiplier(double _theoretical_maximum_height_multiplier = 0.0) {
+    return SetField<double>(VT_THEORETICAL_MAXIMUM_HEIGHT_MULTIPLIER, _theoretical_maximum_height_multiplier, 0.0);
   }
   double theoretical_maximum_vitality_multiplier() const {
     return GetField<double>(VT_THEORETICAL_MAXIMUM_VITALITY_MULTIPLIER, 0.0);
   }
+  bool mutate_theoretical_maximum_vitality_multiplier(double _theoretical_maximum_vitality_multiplier = 0.0) {
+    return SetField<double>(VT_THEORETICAL_MAXIMUM_VITALITY_MULTIPLIER, _theoretical_maximum_vitality_multiplier, 0.0);
+  }
   double theoretical_maximum_weight_multiplier() const {
     return GetField<double>(VT_THEORETICAL_MAXIMUM_WEIGHT_MULTIPLIER, 0.0);
+  }
+  bool mutate_theoretical_maximum_weight_multiplier(double _theoretical_maximum_weight_multiplier = 0.0) {
+    return SetField<double>(VT_THEORETICAL_MAXIMUM_WEIGHT_MULTIPLIER, _theoretical_maximum_weight_multiplier, 0.0);
   }
   uint64_t average_generation() const {
     return GetField<uint64_t>(VT_AVERAGE_GENERATION, 0);
   }
+  bool mutate_average_generation(uint64_t _average_generation = 0) {
+    return SetField<uint64_t>(VT_AVERAGE_GENERATION, _average_generation, 0);
+  }
   double average_immunity() const {
     return GetField<double>(VT_AVERAGE_IMMUNITY, 0.0);
+  }
+  bool mutate_average_immunity(double _average_immunity = 0.0) {
+    return SetField<double>(VT_AVERAGE_IMMUNITY, _average_immunity, 0.0);
   }
   uint32_t average_age() const {
     return GetField<uint32_t>(VT_AVERAGE_AGE, 0);
   }
+  bool mutate_average_age(uint32_t _average_age = 0) {
+    return SetField<uint32_t>(VT_AVERAGE_AGE, _average_age, 0);
+  }
   double average_height() const {
     return GetField<double>(VT_AVERAGE_HEIGHT, 0.0);
+  }
+  bool mutate_average_height(double _average_height = 0.0) {
+    return SetField<double>(VT_AVERAGE_HEIGHT, _average_height, 0.0);
   }
   double average_weight() const {
     return GetField<double>(VT_AVERAGE_WEIGHT, 0.0);
   }
+  bool mutate_average_weight(double _average_weight = 0.0) {
+    return SetField<double>(VT_AVERAGE_WEIGHT, _average_weight, 0.0);
+  }
   double average_max_vitality_at_age() const {
     return GetField<double>(VT_AVERAGE_MAX_VITALITY_AT_AGE, 0.0);
+  }
+  bool mutate_average_max_vitality_at_age(double _average_max_vitality_at_age = 0.0) {
+    return SetField<double>(VT_AVERAGE_MAX_VITALITY_AT_AGE, _average_max_vitality_at_age, 0.0);
   }
   double average_static_fitness() const {
     return GetField<double>(VT_AVERAGE_STATIC_FITNESS, 0.0);
   }
+  bool mutate_average_static_fitness(double _average_static_fitness = 0.0) {
+    return SetField<double>(VT_AVERAGE_STATIC_FITNESS, _average_static_fitness, 0.0);
+  }
   double average_age_death_factor() const {
     return GetField<double>(VT_AVERAGE_AGE_DEATH_FACTOR, 0.0);
+  }
+  bool mutate_average_age_death_factor(double _average_age_death_factor = 0.0) {
+    return SetField<double>(VT_AVERAGE_AGE_DEATH_FACTOR, _average_age_death_factor, 0.0);
   }
   double average_fitness_death_factor() const {
     return GetField<double>(VT_AVERAGE_FITNESS_DEATH_FACTOR, 0.0);
   }
+  bool mutate_average_fitness_death_factor(double _average_fitness_death_factor = 0.0) {
+    return SetField<double>(VT_AVERAGE_FITNESS_DEATH_FACTOR, _average_fitness_death_factor, 0.0);
+  }
   double average_death_factor() const {
     return GetField<double>(VT_AVERAGE_DEATH_FACTOR, 0.0);
+  }
+  bool mutate_average_death_factor(double _average_death_factor = 0.0) {
+    return SetField<double>(VT_AVERAGE_DEATH_FACTOR, _average_death_factor, 0.0);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -181,6 +311,9 @@ struct Plant FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyField<double>(verifier, VT_AVERAGE_DEATH_FACTOR) &&
            verifier.EndTable();
   }
+  PlantT *UnPack(const flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(PlantT *_o, const flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static flatbuffers::Offset<Plant> Pack(flatbuffers::FlatBufferBuilder &_fbb, const PlantT* _o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
 };
 
 struct PlantBuilder {
@@ -364,12 +497,138 @@ struct Plant::Traits {
   static auto constexpr Create = CreatePlant;
 };
 
+flatbuffers::Offset<Plant> CreatePlant(flatbuffers::FlatBufferBuilder &_fbb, const PlantT *_o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+
+inline PlantT *Plant::UnPack(const flatbuffers::resolver_function_t *_resolver) const {
+  auto _o = std::make_unique<PlantT>();
+  UnPackTo(_o.get(), _resolver);
+  return _o.release();
+}
+
+inline void Plant::UnPackTo(PlantT *_o, const flatbuffers::resolver_function_t *_resolver) const {
+  (void)_o;
+  (void)_resolver;
+  { auto _e = year(); _o->year = _e; }
+  { auto _e = population(); _o->population = _e; }
+  { auto _e = matable_population(); _o->matable_population = _e; }
+  { auto _e = conceiving_probability(); _o->conceiving_probability = _e; }
+  { auto _e = mating_probability(); _o->mating_probability = _e; }
+  { auto _e = mating_age_start(); _o->mating_age_start = _e; }
+  { auto _e = mating_age_end(); _o->mating_age_end = _e; }
+  { auto _e = max_age(); _o->max_age = _e; }
+  { auto _e = mutation_probability(); _o->mutation_probability = _e; }
+  { auto _e = offsprings_factor(); _o->offsprings_factor = _e; }
+  { auto _e = age_fitness_on_death_ratio(); _o->age_fitness_on_death_ratio = _e; }
+  { auto _e = height_on_vitality(); _o->height_on_vitality = _e; }
+  { auto _e = weight_on_vitality(); _o->weight_on_vitality = _e; }
+  { auto _e = theoretical_maximum_base_height(); _o->theoretical_maximum_base_height = _e; }
+  { auto _e = theoretical_maximum_base_vitality(); _o->theoretical_maximum_base_vitality = _e; }
+  { auto _e = theoretical_maximum_base_weight(); _o->theoretical_maximum_base_weight = _e; }
+  { auto _e = theoretical_maximum_height(); _o->theoretical_maximum_height = _e; }
+  { auto _e = theoretical_maximum_weight(); _o->theoretical_maximum_weight = _e; }
+  { auto _e = theoretical_maximum_height_multiplier(); _o->theoretical_maximum_height_multiplier = _e; }
+  { auto _e = theoretical_maximum_vitality_multiplier(); _o->theoretical_maximum_vitality_multiplier = _e; }
+  { auto _e = theoretical_maximum_weight_multiplier(); _o->theoretical_maximum_weight_multiplier = _e; }
+  { auto _e = average_generation(); _o->average_generation = _e; }
+  { auto _e = average_immunity(); _o->average_immunity = _e; }
+  { auto _e = average_age(); _o->average_age = _e; }
+  { auto _e = average_height(); _o->average_height = _e; }
+  { auto _e = average_weight(); _o->average_weight = _e; }
+  { auto _e = average_max_vitality_at_age(); _o->average_max_vitality_at_age = _e; }
+  { auto _e = average_static_fitness(); _o->average_static_fitness = _e; }
+  { auto _e = average_age_death_factor(); _o->average_age_death_factor = _e; }
+  { auto _e = average_fitness_death_factor(); _o->average_fitness_death_factor = _e; }
+  { auto _e = average_death_factor(); _o->average_death_factor = _e; }
+}
+
+inline flatbuffers::Offset<Plant> Plant::Pack(flatbuffers::FlatBufferBuilder &_fbb, const PlantT* _o, const flatbuffers::rehasher_function_t *_rehasher) {
+  return CreatePlant(_fbb, _o, _rehasher);
+}
+
+inline flatbuffers::Offset<Plant> CreatePlant(flatbuffers::FlatBufferBuilder &_fbb, const PlantT *_o, const flatbuffers::rehasher_function_t *_rehasher) {
+  (void)_rehasher;
+  (void)_o;
+  struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const PlantT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
+  auto _year = _o->year;
+  auto _population = _o->population;
+  auto _matable_population = _o->matable_population;
+  auto _conceiving_probability = _o->conceiving_probability;
+  auto _mating_probability = _o->mating_probability;
+  auto _mating_age_start = _o->mating_age_start;
+  auto _mating_age_end = _o->mating_age_end;
+  auto _max_age = _o->max_age;
+  auto _mutation_probability = _o->mutation_probability;
+  auto _offsprings_factor = _o->offsprings_factor;
+  auto _age_fitness_on_death_ratio = _o->age_fitness_on_death_ratio;
+  auto _height_on_vitality = _o->height_on_vitality;
+  auto _weight_on_vitality = _o->weight_on_vitality;
+  auto _theoretical_maximum_base_height = _o->theoretical_maximum_base_height;
+  auto _theoretical_maximum_base_vitality = _o->theoretical_maximum_base_vitality;
+  auto _theoretical_maximum_base_weight = _o->theoretical_maximum_base_weight;
+  auto _theoretical_maximum_height = _o->theoretical_maximum_height;
+  auto _theoretical_maximum_weight = _o->theoretical_maximum_weight;
+  auto _theoretical_maximum_height_multiplier = _o->theoretical_maximum_height_multiplier;
+  auto _theoretical_maximum_vitality_multiplier = _o->theoretical_maximum_vitality_multiplier;
+  auto _theoretical_maximum_weight_multiplier = _o->theoretical_maximum_weight_multiplier;
+  auto _average_generation = _o->average_generation;
+  auto _average_immunity = _o->average_immunity;
+  auto _average_age = _o->average_age;
+  auto _average_height = _o->average_height;
+  auto _average_weight = _o->average_weight;
+  auto _average_max_vitality_at_age = _o->average_max_vitality_at_age;
+  auto _average_static_fitness = _o->average_static_fitness;
+  auto _average_age_death_factor = _o->average_age_death_factor;
+  auto _average_fitness_death_factor = _o->average_fitness_death_factor;
+  auto _average_death_factor = _o->average_death_factor;
+  return Ecosystem::CreatePlant(
+      _fbb,
+      _year,
+      _population,
+      _matable_population,
+      _conceiving_probability,
+      _mating_probability,
+      _mating_age_start,
+      _mating_age_end,
+      _max_age,
+      _mutation_probability,
+      _offsprings_factor,
+      _age_fitness_on_death_ratio,
+      _height_on_vitality,
+      _weight_on_vitality,
+      _theoretical_maximum_base_height,
+      _theoretical_maximum_base_vitality,
+      _theoretical_maximum_base_weight,
+      _theoretical_maximum_height,
+      _theoretical_maximum_weight,
+      _theoretical_maximum_height_multiplier,
+      _theoretical_maximum_vitality_multiplier,
+      _theoretical_maximum_weight_multiplier,
+      _average_generation,
+      _average_immunity,
+      _average_age,
+      _average_height,
+      _average_weight,
+      _average_max_vitality_at_age,
+      _average_static_fitness,
+      _average_age_death_factor,
+      _average_fitness_death_factor,
+      _average_death_factor);
+}
+
 inline const Ecosystem::Plant *GetPlant(const void *buf) {
   return flatbuffers::GetRoot<Ecosystem::Plant>(buf);
 }
 
 inline const Ecosystem::Plant *GetSizePrefixedPlant(const void *buf) {
   return flatbuffers::GetSizePrefixedRoot<Ecosystem::Plant>(buf);
+}
+
+inline Plant *GetMutablePlant(void *buf) {
+  return flatbuffers::GetMutableRoot<Plant>(buf);
+}
+
+inline Ecosystem::Plant *GetMutableSizePrefixedPlant(void *buf) {
+  return flatbuffers::GetMutableSizePrefixedRoot<Ecosystem::Plant>(buf);
 }
 
 inline bool VerifyPlantBuffer(
@@ -392,6 +651,18 @@ inline void FinishSizePrefixedPlantBuffer(
     flatbuffers::FlatBufferBuilder &fbb,
     flatbuffers::Offset<Ecosystem::Plant> root) {
   fbb.FinishSizePrefixed(root);
+}
+
+inline std::unique_ptr<Ecosystem::PlantT> UnPackPlant(
+    const void *buf,
+    const flatbuffers::resolver_function_t *res = nullptr) {
+  return std::unique_ptr<Ecosystem::PlantT>(GetPlant(buf)->UnPack(res));
+}
+
+inline std::unique_ptr<Ecosystem::PlantT> UnPackSizePrefixedPlant(
+    const void *buf,
+    const flatbuffers::resolver_function_t *res = nullptr) {
+  return std::unique_ptr<Ecosystem::PlantT>(GetSizePrefixedPlant(buf)->UnPack(res));
 }
 
 }  // namespace Ecosystem
