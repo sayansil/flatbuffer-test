@@ -37,8 +37,6 @@ message("flatc compiler at: ${FLATC}")
 add_subdirectory(schemas)
 include_directories(schemas)
 
-find_package(fmt REQUIRED)
-
 function(add_code name)
     add_executable(${name} ${name}.cpp)
     target_link_libraries(${name} PRIVATE flatbuffers fmt::fmt)
