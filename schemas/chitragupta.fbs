@@ -1,24 +1,24 @@
 namespace Ecosystem;
 
-enum Gender : byte { Male = 1, Female = 0}
-enum Reproduction : byte { Sexual = 1, Asexual = 0}
+enum Gender : byte { Male = 0, Female}
+enum Reproduction : byte { Sexual = 0, Asexual}
 
 table Organism {
 
     /// Fixed for a species
     kind:string (required);
     kingdom:string (required);
-    chromosome_number:ulong (required);
-    food_chain_rank:ulong (required);
-    is_asexual:Reproduction (required);
-    age_fitness_on_death_ratio:double (required);
-    conceiving_probability:double (required);
-    mating_probability:double (required);
-    mating_age_start:ulong (required);
-    mating_age_end:ulong (required);
-    max_age:ulong (required);
-    mutation_probability:double (required);
-    offsprings_factor:double (required);
+    chromosome_number:ulong = 0;
+    food_chain_rank:ulong = 0;
+    is_asexual:Reproduction = Sexual;
+    age_fitness_on_death_ratio:double = 0.0;
+    conceiving_probability:double = 0.0;
+    mating_probability:double = 0.0;
+    mating_age_start:ulong = 0;
+    mating_age_end:ulong = 0;
+    max_age:ulong = 0;
+    mutation_probability:double = 0.0;
+    offsprings_factor:double = 0.0;
     height_on_speed:double;
     height_on_stamina:double;
     height_on_vitality:double;
@@ -33,7 +33,7 @@ table Organism {
     theoretical_maximum_base_height:double;
     theoretical_maximum_base_speed:double;
     theoretical_maximum_base_stamina:double;
-    theoretical_maximum_base_vitality:double;
+    theoretical_maheximum_base_vitality:double;
     theoretical_maximum_base_weight:double;
     theoretical_maximum_height:double;
     theoretical_maximum_speed:double;
@@ -46,10 +46,10 @@ table Organism {
 
     ///  Fixed for an organism
     name:string (key, required);
-    gender:Gender (required);
-    generation:ulong (required);
-    immunity:double (required);
     chromosome:string (required);
+    gender:Gender = Male;
+    generation:ulong = 0;
+    immunity:double = 0.0;
     base_appetite:double;
     base_height:double;
     base_speed:double;
@@ -65,13 +65,13 @@ table Organism {
     max_weight:double;
 
     /// Stats affected by age
-    age:ulong (required);
-    height:double (required);
-    weight:double (required);
-    age_death_factor:double (required);
-    fitness_death_factor:double (required);
-    death_factor:double (required);
-    static_fitness:double (required);
+    age:ulong = 0;
+    height:double = 0.0;
+    weight:double = 0.0;
+    age_death_factor:double = 0.0;
+    fitness_death_factor:double = 0.0;
+    death_factor:double = 0.0;
+    static_fitness:double = 0.0;
     max_appetite_at_age:double;
     max_speed_at_age:double;
     max_stamina_at_age:double;
@@ -85,12 +85,12 @@ table Organism {
 
 table Species {
     kind:string (key, required);
-    repeated organism:Organism (required);
+    organism:[Organism] (required);
 }
 
 table World {
-    year:ulong (key, required);
-    repeated species:Species (required);
+    year:string (key, required);
+    species:[Species] (required);
 }
 
 root_type World;
