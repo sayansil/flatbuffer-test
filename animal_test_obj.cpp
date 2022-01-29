@@ -1,7 +1,9 @@
 #include <iostream>
 #include <animal_generated.h>
 #include <fmt/core.h>
+#include <flatbuffers/minireflect.h>
 #include <flatbuffers/idl.h>
+#include <nlohmann/json.hpp>
 
 int main()
 {
@@ -32,4 +34,11 @@ int main()
     for(int i = 0; i < size; i++)
         fmt::print("{:#04x} ", fbb1.GetBufferPointer()[i]);
     fmt::print("\nsize: {} bytes \n", size);
+
+    flatbuffers::ToStringVisitor visitor("", true, "", true);
+    flatbuffers::IterateFlatBuffer(fbb1.GetBufferPointer(), Ecosystem::OrganismTypeTable(), &visitor);
+    fmt::print("{}\n", visitor.s);
+
+    nlohmann::json json_data = nlohmann::json::parse(visitor.s);
+    fmt::print("Parsed JSON:\n{}\n", json_data.dump());
 } 

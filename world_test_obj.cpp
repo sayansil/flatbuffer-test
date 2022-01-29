@@ -1,7 +1,8 @@
 #include <iostream>
 #include <chitragupta_generated.h>
-#include <flatbuffers/idl.h>
 #include <fmt/core.h>
+#include <flatbuffers/minireflect.h>
+#include <nlohmann/json.hpp>
 
 int main()
 {
@@ -49,4 +50,11 @@ int main()
     {
         fmt::print("world does not have species\n");
     }
+    
+    flatbuffers::ToStringVisitor visitor("", true, "", true);
+    flatbuffers::IterateFlatBuffer(buffer_pointer, Ecosystem::WorldTypeTable(), &visitor);
+    fmt::print("{}\n", visitor.s);
+
+    nlohmann::json json_data = nlohmann::json::parse(visitor.s);
+    fmt::print("Parsed JSON:\n{}\n", json_data.dump());
 }

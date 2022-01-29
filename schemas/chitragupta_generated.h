@@ -20,6 +20,12 @@ struct World;
 struct WorldBuilder;
 struct WorldT;
 
+inline const flatbuffers::TypeTable *OrganismTypeTable();
+
+inline const flatbuffers::TypeTable *SpeciesTypeTable();
+
+inline const flatbuffers::TypeTable *WorldTypeTable();
+
 enum class Gender : int8_t {
   Male = 0,
   Female = 1,
@@ -156,6 +162,9 @@ struct Organism FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef OrganismT NativeTableType;
   typedef OrganismBuilder Builder;
   struct Traits;
+  static const flatbuffers::TypeTable *MiniReflectTypeTable() {
+    return OrganismTypeTable();
+  }
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_KIND = 4,
     VT_KINGDOM = 6,
@@ -1253,6 +1262,9 @@ struct Species FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SpeciesT NativeTableType;
   typedef SpeciesBuilder Builder;
   struct Traits;
+  static const flatbuffers::TypeTable *MiniReflectTypeTable() {
+    return SpeciesTypeTable();
+  }
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_KIND = 4,
     VT_ORGANISM = 6
@@ -1351,6 +1363,9 @@ struct World FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef WorldT NativeTableType;
   typedef WorldBuilder Builder;
   struct Traits;
+  static const flatbuffers::TypeTable *MiniReflectTypeTable() {
+    return WorldTypeTable();
+  }
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_YEAR = 4,
     VT_SPECIES = 6
@@ -1722,6 +1737,229 @@ inline flatbuffers::Offset<World> CreateWorld(flatbuffers::FlatBufferBuilder &_f
       _fbb,
       _year,
       _species);
+}
+
+inline const flatbuffers::TypeTable *GenderTypeTable() {
+  static const flatbuffers::TypeCode type_codes[] = {
+    { flatbuffers::ET_CHAR, 0, 0 },
+    { flatbuffers::ET_CHAR, 0, 0 }
+  };
+  static const flatbuffers::TypeFunction type_refs[] = {
+    Ecosystem::GenderTypeTable
+  };
+  static const char * const names[] = {
+    "Male",
+    "Female"
+  };
+  static const flatbuffers::TypeTable tt = {
+    flatbuffers::ST_ENUM, 2, type_codes, type_refs, nullptr, nullptr, names
+  };
+  return &tt;
+}
+
+inline const flatbuffers::TypeTable *ReproductionTypeTable() {
+  static const flatbuffers::TypeCode type_codes[] = {
+    { flatbuffers::ET_CHAR, 0, 0 },
+    { flatbuffers::ET_CHAR, 0, 0 }
+  };
+  static const flatbuffers::TypeFunction type_refs[] = {
+    Ecosystem::ReproductionTypeTable
+  };
+  static const char * const names[] = {
+    "Sexual",
+    "Asexual"
+  };
+  static const flatbuffers::TypeTable tt = {
+    flatbuffers::ST_ENUM, 2, type_codes, type_refs, nullptr, nullptr, names
+  };
+  return &tt;
+}
+
+inline const flatbuffers::TypeTable *OrganismTypeTable() {
+  static const flatbuffers::TypeCode type_codes[] = {
+    { flatbuffers::ET_STRING, 0, -1 },
+    { flatbuffers::ET_STRING, 0, -1 },
+    { flatbuffers::ET_ULONG, 0, -1 },
+    { flatbuffers::ET_ULONG, 0, -1 },
+    { flatbuffers::ET_CHAR, 0, 0 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_ULONG, 0, -1 },
+    { flatbuffers::ET_ULONG, 0, -1 },
+    { flatbuffers::ET_ULONG, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_STRING, 0, -1 },
+    { flatbuffers::ET_STRING, 0, -1 },
+    { flatbuffers::ET_CHAR, 0, 1 },
+    { flatbuffers::ET_ULONG, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_ULONG, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 }
+  };
+  static const flatbuffers::TypeFunction type_refs[] = {
+    Ecosystem::ReproductionTypeTable,
+    Ecosystem::GenderTypeTable
+  };
+  static const char * const names[] = {
+    "kind",
+    "kingdom",
+    "chromosome_number",
+    "food_chain_rank",
+    "is_asexual",
+    "age_fitness_on_death_ratio",
+    "conceiving_probability",
+    "mating_probability",
+    "mating_age_start",
+    "mating_age_end",
+    "max_age",
+    "mutation_probability",
+    "offsprings_factor",
+    "height_on_speed",
+    "height_on_stamina",
+    "height_on_vitality",
+    "weight_on_speed",
+    "weight_on_stamina",
+    "weight_on_vitality",
+    "vitality_on_appetite",
+    "vitality_on_speed",
+    "stamina_on_appetite",
+    "stamina_on_speed",
+    "theoretical_maximum_base_appetite",
+    "theoretical_maximum_base_height",
+    "theoretical_maximum_base_speed",
+    "theoretical_maximum_base_stamina",
+    "theoretical_maheximum_base_vitality",
+    "theoretical_maximum_base_weight",
+    "theoretical_maximum_height",
+    "theoretical_maximum_speed",
+    "theoretical_maximum_weight",
+    "theoretical_maximum_height_multiplier",
+    "theoretical_maximum_speed_multiplier",
+    "theoretical_maximum_stamina_multiplier",
+    "theoretical_maximum_vitality_multiplier",
+    "theoretical_maximum_weight_multiplier",
+    "name",
+    "chromosome",
+    "gender",
+    "generation",
+    "immunity",
+    "base_appetite",
+    "base_height",
+    "base_speed",
+    "base_stamina",
+    "base_vitality",
+    "base_weight",
+    "height_multiplier",
+    "speed_multiplier",
+    "stamina_multiplier",
+    "vitality_multiplier",
+    "weight_multiplier",
+    "max_height",
+    "max_weight",
+    "age",
+    "height",
+    "weight",
+    "age_death_factor",
+    "fitness_death_factor",
+    "death_factor",
+    "static_fitness",
+    "max_appetite_at_age",
+    "max_speed_at_age",
+    "max_stamina_at_age",
+    "max_vitality_at_age",
+    "vision_radius",
+    "sleep_restore_factor"
+  };
+  static const flatbuffers::TypeTable tt = {
+    flatbuffers::ST_TABLE, 68, type_codes, type_refs, nullptr, nullptr, names
+  };
+  return &tt;
+}
+
+inline const flatbuffers::TypeTable *SpeciesTypeTable() {
+  static const flatbuffers::TypeCode type_codes[] = {
+    { flatbuffers::ET_STRING, 0, -1 },
+    { flatbuffers::ET_SEQUENCE, 1, 0 }
+  };
+  static const flatbuffers::TypeFunction type_refs[] = {
+    Ecosystem::OrganismTypeTable
+  };
+  static const char * const names[] = {
+    "kind",
+    "organism"
+  };
+  static const flatbuffers::TypeTable tt = {
+    flatbuffers::ST_TABLE, 2, type_codes, type_refs, nullptr, nullptr, names
+  };
+  return &tt;
+}
+
+inline const flatbuffers::TypeTable *WorldTypeTable() {
+  static const flatbuffers::TypeCode type_codes[] = {
+    { flatbuffers::ET_STRING, 0, -1 },
+    { flatbuffers::ET_SEQUENCE, 1, 0 }
+  };
+  static const flatbuffers::TypeFunction type_refs[] = {
+    Ecosystem::SpeciesTypeTable
+  };
+  static const char * const names[] = {
+    "year",
+    "species"
+  };
+  static const flatbuffers::TypeTable tt = {
+    flatbuffers::ST_TABLE, 2, type_codes, type_refs, nullptr, nullptr, names
+  };
+  return &tt;
 }
 
 inline const Ecosystem::World *GetWorld(const void *buf) {

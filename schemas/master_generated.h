@@ -12,6 +12,8 @@ struct Master;
 struct MasterBuilder;
 struct MasterT;
 
+inline const flatbuffers::TypeTable *MasterTypeTable();
+
 enum class Gender : int8_t {
   Female = 0,
   Male = 1,
@@ -60,6 +62,9 @@ struct Master FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef MasterT NativeTableType;
   typedef MasterBuilder Builder;
   struct Traits;
+  static const flatbuffers::TypeTable *MiniReflectTypeTable() {
+    return MasterTypeTable();
+  }
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_NAME = 4,
     VT_KIND = 6,
@@ -321,6 +326,58 @@ inline flatbuffers::Offset<Master> CreateMaster(flatbuffers::FlatBufferBuilder &
       _height,
       _weight,
       _static_fitness);
+}
+
+inline const flatbuffers::TypeTable *GenderTypeTable() {
+  static const flatbuffers::TypeCode type_codes[] = {
+    { flatbuffers::ET_CHAR, 0, 0 },
+    { flatbuffers::ET_CHAR, 0, 0 }
+  };
+  static const flatbuffers::TypeFunction type_refs[] = {
+    Ecosystem::GenderTypeTable
+  };
+  static const char * const names[] = {
+    "Female",
+    "Male"
+  };
+  static const flatbuffers::TypeTable tt = {
+    flatbuffers::ST_ENUM, 2, type_codes, type_refs, nullptr, nullptr, names
+  };
+  return &tt;
+}
+
+inline const flatbuffers::TypeTable *MasterTypeTable() {
+  static const flatbuffers::TypeCode type_codes[] = {
+    { flatbuffers::ET_STRING, 0, -1 },
+    { flatbuffers::ET_STRING, 0, -1 },
+    { flatbuffers::ET_STRING, 0, -1 },
+    { flatbuffers::ET_ULONG, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_CHAR, 0, 0 },
+    { flatbuffers::ET_UINT, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 }
+  };
+  static const flatbuffers::TypeFunction type_refs[] = {
+    Ecosystem::GenderTypeTable
+  };
+  static const char * const names[] = {
+    "name",
+    "kind",
+    "chromosome",
+    "generation",
+    "immunity",
+    "gender",
+    "age",
+    "height",
+    "weight",
+    "static_fitness"
+  };
+  static const flatbuffers::TypeTable tt = {
+    flatbuffers::ST_TABLE, 10, type_codes, type_refs, nullptr, nullptr, names
+  };
+  return &tt;
 }
 
 inline const Ecosystem::Master *GetMaster(const void *buf) {

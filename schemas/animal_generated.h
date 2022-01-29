@@ -12,6 +12,8 @@ struct Organism;
 struct OrganismBuilder;
 struct OrganismT;
 
+inline const flatbuffers::TypeTable *OrganismTypeTable();
+
 struct OrganismT : public flatbuffers::NativeTable {
   typedef Organism TableType;
   uint64_t chromosome_number = 12ULL;
@@ -22,6 +24,9 @@ struct Organism FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef OrganismT NativeTableType;
   typedef OrganismBuilder Builder;
   struct Traits;
+  static const flatbuffers::TypeTable *MiniReflectTypeTable() {
+    return OrganismTypeTable();
+  }
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_CHROMOSOME_NUMBER = 4,
     VT_FOOD_CHAIN_RANK = 6
@@ -114,6 +119,21 @@ inline flatbuffers::Offset<Organism> CreateOrganism(flatbuffers::FlatBufferBuild
       _fbb,
       _chromosome_number,
       _food_chain_rank);
+}
+
+inline const flatbuffers::TypeTable *OrganismTypeTable() {
+  static const flatbuffers::TypeCode type_codes[] = {
+    { flatbuffers::ET_ULONG, 0, -1 },
+    { flatbuffers::ET_ULONG, 0, -1 }
+  };
+  static const char * const names[] = {
+    "chromosome_number",
+    "food_chain_rank"
+  };
+  static const flatbuffers::TypeTable tt = {
+    flatbuffers::ST_TABLE, 2, type_codes, nullptr, nullptr, nullptr, names
+  };
+  return &tt;
 }
 
 inline const Ecosystem::Organism *GetOrganism(const void *buf) {

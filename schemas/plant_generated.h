@@ -12,6 +12,8 @@ struct Plant;
 struct PlantBuilder;
 struct PlantT;
 
+inline const flatbuffers::TypeTable *PlantTypeTable();
+
 struct PlantT : public flatbuffers::NativeTable {
   typedef Plant TableType;
   uint64_t year = 0;
@@ -51,6 +53,9 @@ struct Plant FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef PlantT NativeTableType;
   typedef PlantBuilder Builder;
   struct Traits;
+  static const flatbuffers::TypeTable *MiniReflectTypeTable() {
+    return PlantTypeTable();
+  }
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_YEAR = 4,
     VT_POPULATION = 6,
@@ -613,6 +618,79 @@ inline flatbuffers::Offset<Plant> CreatePlant(flatbuffers::FlatBufferBuilder &_f
       _average_age_death_factor,
       _average_fitness_death_factor,
       _average_death_factor);
+}
+
+inline const flatbuffers::TypeTable *PlantTypeTable() {
+  static const flatbuffers::TypeCode type_codes[] = {
+    { flatbuffers::ET_ULONG, 0, -1 },
+    { flatbuffers::ET_ULONG, 0, -1 },
+    { flatbuffers::ET_ULONG, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_UINT, 0, -1 },
+    { flatbuffers::ET_UINT, 0, -1 },
+    { flatbuffers::ET_UINT, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_ULONG, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_UINT, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 },
+    { flatbuffers::ET_DOUBLE, 0, -1 }
+  };
+  static const char * const names[] = {
+    "year",
+    "population",
+    "matable_population",
+    "conceiving_probability",
+    "mating_probability",
+    "mating_age_start",
+    "mating_age_end",
+    "max_age",
+    "mutation_probability",
+    "offsprings_factor",
+    "age_fitness_on_death_ratio",
+    "height_on_vitality",
+    "weight_on_vitality",
+    "theoretical_maximum_base_height",
+    "theoretical_maximum_base_vitality",
+    "theoretical_maximum_base_weight",
+    "theoretical_maximum_height",
+    "theoretical_maximum_weight",
+    "theoretical_maximum_height_multiplier",
+    "theoretical_maximum_vitality_multiplier",
+    "theoretical_maximum_weight_multiplier",
+    "average_generation",
+    "average_immunity",
+    "average_age",
+    "average_height",
+    "average_weight",
+    "average_max_vitality_at_age",
+    "average_static_fitness",
+    "average_age_death_factor",
+    "average_fitness_death_factor",
+    "average_death_factor"
+  };
+  static const flatbuffers::TypeTable tt = {
+    flatbuffers::ST_TABLE, 31, type_codes, nullptr, nullptr, nullptr, names
+  };
+  return &tt;
 }
 
 inline const Ecosystem::Plant *GetPlant(const void *buf) {

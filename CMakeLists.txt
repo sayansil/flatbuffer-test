@@ -31,6 +31,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(fmtlib)
 
+FetchContent_Declare(
+    nlohmann
+    GIT_REPOSITORY "https://github.com/nlohmann/json"
+    GIT_TAG 4d4c2730365084f2a68fb7a01110ae66fad059a3
+    GIT_PROGRESS TRUE
+)
+FetchContent_Populate(nlohmann)
+include_directories(${nlohmann_SOURCE_DIR}/include)
+
 set(FLATC ${FlatBuffers_BINARY_DIR}/flatc)
 message("flatc compiler at: ${FLATC}")
 
