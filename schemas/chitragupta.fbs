@@ -85,6 +85,7 @@ table Organism {
 
 table Species {
     kind:string (key, required);
+    kingdom:string (required);
     organism:[Organism] (required);
 }
 

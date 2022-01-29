@@ -1,7 +1,5 @@
 set(SCHEMAS
-    animal
-    master
-    plant
+    test
     chitragupta
     )
 

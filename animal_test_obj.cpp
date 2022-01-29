@@ -1,5 +1,5 @@
 #include <iostream>
-#include <animal_generated.h>
+#include <test_generated.h>
 #include <fmt/core.h>
 #include <flatbuffers/minireflect.h>
 #include <flatbuffers/idl.h>
@@ -7,16 +7,16 @@
 
 int main()
 {
-    // create builders   
+    // create builders
     flatbuffers::FlatBufferBuilder builder;
     Ecosystem::OrganismT org;
     org.food_chain_rank = 94;
     org.chromosome_number = 37;
     builder.Finish(Ecosystem::Organism::Pack(builder, &org));
 
-    uint8_t * buffer_pointer = builder.GetBufferPointer();
+    uint8_t *buffer_pointer = builder.GetBufferPointer();
     int size = builder.GetSize();
-    for(int i = 0; i < size; i++)
+    for (int i = 0; i < size; i++)
         fmt::print("{:#04x} ", buffer_pointer[i]);
     fmt::print("\nsize: {} bytes \n", size);
 
@@ -27,11 +27,11 @@ int main()
     obj.chromosome_number += 10;
     fmt::print("Modifying chromosome_number to {}\n", obj.chromosome_number);
     fmt::print("Buffer after modification:\n");
-    
+
     flatbuffers::FlatBufferBuilder fbb1;
     fbb1.Finish(Ecosystem::Organism::Pack(fbb1, &obj));
 
-    for(int i = 0; i < size; i++)
+    for (int i = 0; i < size; i++)
         fmt::print("{:#04x} ", fbb1.GetBufferPointer()[i]);
     fmt::print("\nsize: {} bytes \n", size);
 
@@ -41,4 +41,4 @@ int main()
 
     nlohmann::json json_data = nlohmann::json::parse(visitor.s);
     fmt::print("Parsed JSON:\n{}\n", json_data.dump());
-} 
+}
