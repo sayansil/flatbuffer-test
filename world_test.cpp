@@ -163,7 +163,8 @@ flatbuffers::Offset<Ecosystem::Species> createSpecies(
 
     species_builder.add_kingdom(builder.CreateString(kingdom.c_str()));
     species_builder.add_kind(builder.CreateString(kind.c_str()));
-    species_builder.add_organism(builder.CreateVector(stdvecOrganisms));
+    //species_builder.add_organism(builder.CreateVector(stdvecOrganisms));
+    species_builder.add_organism(builder.CreateVectorOfSortedTables(stdvecOrganisms.data(), stdvecOrganisms.size()));
 
     return species_builder.Finish();
 }
@@ -179,7 +180,8 @@ void createWorld(flatbuffers::FlatBufferBuilder &builder)
     stdvecSpecies.push_back(createSpecies(builder, species_builder, "animal", "lion", 1));
     stdvecSpecies.push_back(createSpecies(builder, species_builder, "plant", "bamboo", 3));
 
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<Ecosystem::Species>>> species_vec = builder.CreateVector(stdvecSpecies.data(), stdvecSpecies.size());
+    //flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<Ecosystem::Species>>> species_vec = builder.CreateVector(stdvecSpecies.data(), stdvecSpecies.size());
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<Ecosystem::Species>>> species_vec = builder.CreateVectorOfSortedTables(stdvecSpecies.data(), stdvecSpecies.size());
 
     world_builder.add_species(species_vec);
     world_builder.add_year(builder.CreateString("2022"));
@@ -205,6 +207,19 @@ int main()
             fmt::print("species kind: {}\n", species_pointer->kind()->str());
             fmt::print("species kingdom: {}\n", species_pointer->kingdom()->str());
         }
+        fmt::print("Accessing by lookup\n");
+        
+        const Ecosystem::Species * species_pointer = world_pointer->species()->LookupByKey("deer");
+        fmt::print("animal kind: {}\n", species_pointer->kind()->str());
+        fmt::print("animal kingdom: {}\n", species_pointer->kingdom()->str());
+        
+        species_pointer = world_pointer->species()->LookupByKey("lion");
+        fmt::print("animal kind: {}\n", species_pointer->kind()->str());
+        fmt::print("animal kingdom: {}\n", species_pointer->kingdom()->str());
+        
+        species_pointer = world_pointer->species()->LookupByKey("bamboo");
+        fmt::print("animal kind: {}\n", species_pointer->kind()->str());
+        fmt::print("animal kingdom: {}\n", species_pointer->kingdom()->str());
     }
     else
     {
