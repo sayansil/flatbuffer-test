@@ -44,9 +44,9 @@ enum class JsonTypes
 //     }
 // }
 
-const char *getValueAsStr(nlohmann::json &attributes, const std::string &key)
+std::string getValueAsStr(nlohmann::json &attributes, const std::string &key)
 {
-    return attributes.find(key) != attributes.end() ? attributes[key].get<std::string>().c_str() : "";
+    return attributes.find(key) != attributes.end() ? attributes[key].get<std::string>() : "";
 }
 
 uint64_t getValueAsUlong(nlohmann::json &attributes, const std::string &key)
@@ -69,8 +69,8 @@ flatbuffers::Offset<Ecosystem::Organism> createOrganism(
     Ecosystem::OrganismBuilder &organism_builder,
     nlohmann::json &attributes)
 {
-    organism_builder.add_kind(builder.CreateString(getValueAsStr(attributes, "kind")));
-    organism_builder.add_kingdom(builder.CreateString(getValueAsStr(attributes, "kingdom")));
+    organism_builder.add_kind(builder.CreateString(getValueAsStr(attributes, "kind").c_str()));
+    organism_builder.add_kingdom(builder.CreateString(getValueAsStr(attributes, "kingdom").c_str()));
     organism_builder.add_chromosome_number(getValueAsUlong(attributes, "chromosome_number"));
     organism_builder.add_food_chain_rank(getValueAsUlong(attributes, "food_chain_rank"));
     organism_builder.add_is_asexual(Ecosystem::Reproduction(getValueAsByte(attributes, "is_asexual")));
@@ -106,8 +106,8 @@ flatbuffers::Offset<Ecosystem::Organism> createOrganism(
     organism_builder.add_theoretical_maximum_stamina_multiplier(getValueAsDouble(attributes, "theoretical_maximum_stamina_multiplier"));
     organism_builder.add_theoretical_maximum_vitality_multiplier(getValueAsDouble(attributes, "theoretical_maximum_vitality_multiplier"));
     organism_builder.add_theoretical_maximum_weight_multiplier(getValueAsDouble(attributes, "theoretical_maximum_weight_multiplier"));
-    organism_builder.add_name(builder.CreateString(getValueAsStr(attributes, "name")));
-    organism_builder.add_chromosome(builder.CreateString(getValueAsStr(attributes, "chromosome")));
+    organism_builder.add_name(builder.CreateString(getValueAsStr(attributes, "name").c_str()));
+    organism_builder.add_chromosome(builder.CreateString(getValueAsStr(attributes, "chromosome").c_str()));
     organism_builder.add_gender(Ecosystem::Gender(getValueAsByte(attributes, "gender")));
     organism_builder.add_generation(getValueAsUlong(attributes, "generation"));
     organism_builder.add_immunity(getValueAsDouble(attributes, "immunity"));
@@ -214,5 +214,5 @@ int main()
     flatbuffers::ToStringVisitor visitor("", true, "", true);
     flatbuffers::IterateFlatBuffer(builder.GetBufferPointer(), Ecosystem::WorldTypeTable(), &visitor);
     nlohmann::json json_data = nlohmann::json::parse(visitor.s);
-    fmt::print("Parsed JSON:\n{}\n", json_data.dump());
+    fmt::print("Parsed JSON:\n{}\n", json_data.dump(4));
 }
