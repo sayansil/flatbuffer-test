@@ -14,36 +14,6 @@ enum class JsonTypes
     BYTE, // For Reproduction & Gender Enums
 };
 
-// template <typename T>
-// T getValue(nlohmann::json &attributes, const std::string &key, const JsonTypes &type)
-// {
-//     fmt::print("kind: {}", key);
-//     if (type == JsonTypes::STRING)
-//     {
-//         fmt::print("type: {}", "STRING");
-//         return attributes.find(key) != attributes.end() ? attributes[key].get<std::string>() : "";
-//     }
-//     else if (type == JsonTypes::DOUBLE)
-//     {
-//         fmt::print("type: {}", "DOUBLE");
-//         return attributes.find(key) != attributes.end() ? attributes[key].get() : 0.0;
-//     }
-//     else if (type == JsonTypes::ULONG)
-//     {
-//         fmt::print("type: {}", "ULONG");
-//         return attributes.find(key) != attributes.end() ? attributes[key].get() : 0;
-//     }
-//     else if (type == JsonTypes::BYTE)
-//     {
-//         fmt::print("type: {}", "BYTE");
-//         return attributes.find(key) != attributes.end() ? attributes[key].get() : 0;
-//     }
-//     else
-//     {
-//         throw std::runtime_error("Invalid Json Type");
-//     }
-// }
-
 std::string getValueAsStr(nlohmann::json &attributes, const std::string &key)
 {
     return attributes.find(key) != attributes.end() ? attributes[key].get<std::string>() : "";
@@ -163,7 +133,6 @@ flatbuffers::Offset<Ecosystem::Species> createSpecies(
 
     species_builder.add_kingdom(builder.CreateString(kingdom.c_str()));
     species_builder.add_kind(builder.CreateString(kind.c_str()));
-    //species_builder.add_organism(builder.CreateVector(stdvecOrganisms));
     species_builder.add_organism(builder.CreateVectorOfSortedTables(stdvecOrganisms.data(), stdvecOrganisms.size()));
 
     return species_builder.Finish();
@@ -180,12 +149,26 @@ void createWorld(flatbuffers::FlatBufferBuilder &builder)
     stdvecSpecies.push_back(createSpecies(builder, species_builder, "animal", "lion", 1));
     stdvecSpecies.push_back(createSpecies(builder, species_builder, "plant", "bamboo", 3));
 
-    //flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<Ecosystem::Species>>> species_vec = builder.CreateVector(stdvecSpecies.data(), stdvecSpecies.size());
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<Ecosystem::Species>>> species_vec = builder.CreateVectorOfSortedTables(stdvecSpecies.data(), stdvecSpecies.size());
 
     world_builder.add_species(species_vec);
     world_builder.add_year(builder.CreateString("2022"));
     builder.Finish(world_builder.Finish());
+}
+
+const Ecosystem::Species *lookUpSpecies(const Ecosystem::World *world_pointer, const std::string &kind)
+{
+    fmt::print("\nLooking for {}\n", kind);
+    const Ecosystem::Species *species_pointer = world_pointer->species()->LookupByKey(kind.c_str());
+    if (species_pointer)
+    {
+        fmt::print("Found {} of kingdom {}\n", species_pointer->kind()->c_str(), species_pointer->kingdom()->c_str());
+    }
+    else
+    {
+        fmt::print("species not found\n");
+    }
+    return species_pointer;
 }
 
 int main()
@@ -194,7 +177,7 @@ int main()
     createWorld(builder);
     fmt::print("\nsize: {} bytes \n", builder.GetSize());
 
-    auto world_pointer = Ecosystem::GetWorld(builder.GetBufferPointer());
+    const Ecosystem::World *world_pointer = Ecosystem::GetWorld(builder.GetBufferPointer());
 
     fmt::print("Year: {}\n", world_pointer->year()->str());
     if (world_pointer->species())
@@ -203,23 +186,16 @@ int main()
         fmt::print("Species num: {}\n", world_pointer->species()->size());
         for (int i = 0; i < world_pointer->species()->size(); i++)
         {
-            auto species_pointer = world_pointer->species()->Get(i);
+            const Ecosystem::Species *species_pointer = world_pointer->species()->Get(i);
             fmt::print("species kind: {}\n", species_pointer->kind()->str());
             fmt::print("species kingdom: {}\n", species_pointer->kingdom()->str());
         }
-        fmt::print("Accessing by lookup\n");
-        
-        const Ecosystem::Species * species_pointer = world_pointer->species()->LookupByKey("deer");
-        fmt::print("animal kind: {}\n", species_pointer->kind()->str());
-        fmt::print("animal kingdom: {}\n", species_pointer->kingdom()->str());
-        
-        species_pointer = world_pointer->species()->LookupByKey("lion");
-        fmt::print("animal kind: {}\n", species_pointer->kind()->str());
-        fmt::print("animal kingdom: {}\n", species_pointer->kingdom()->str());
-        
-        species_pointer = world_pointer->species()->LookupByKey("bamboo");
-        fmt::print("animal kind: {}\n", species_pointer->kind()->str());
-        fmt::print("animal kingdom: {}\n", species_pointer->kingdom()->str());
+
+        auto x = lookUpSpecies(world_pointer, "deer");
+        auto y = lookUpSpecies(world_pointer, "lion1");
+        auto z = lookUpSpecies(world_pointer, "bamboo");
+
+        assert(y == nullptr);
     }
     else
     {
